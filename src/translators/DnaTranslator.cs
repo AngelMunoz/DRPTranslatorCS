@@ -1,7 +1,12 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using DRPTranslatorCS.Symbols;
 namespace DRPTranslatorCS.Translators
 {
+    /// <summary>
+    /// Translates and manages any method regarding DNA Sequences, transcribing them to RNA or Aminoacid sequences.
+    /// This class can also (if needed) return the RNA or Aminoacid sequence representation of the Original DNA sequence without translating or transcribing
+    /// </summary>
     class DnaTranslator
     {
         /// <summary>
@@ -18,19 +23,48 @@ namespace DRPTranslatorCS.Translators
         /// </returns>
         public string compDD(string dna)
         {
-            throw new NotImplementedException();
+            List<char> dnaBases = new List<char>();
+            string returnSeq = "";
+            foreach (char dBase in dna)
+            {
+                dnaBases.Add(dBase);
+            }
+            dnaBases.Reverse();
+            foreach (char dBase in dnaBases)
+            {
+                returnSeq += dBase;
+            }
+            return returnSeq;
         }
 
         /// <summary>
+        /// Given a DNA string sequence, said sequence will be converted into
+        /// it's matching RNA sequence without any transcription or translation
+        /// DNA.A's become RNA.A's in that sense
         ///  DNA -> RNA Equivalent: T -> U
         ///  TAGATC (original)
         ///  UAGAUC (return)
         /// </summary>
-        /// <param name="dna"></param>
-        /// <returns></returns>
+        /// <param name="dna">
+        /// String representing a DNA Sequence
+        /// </param>
+        /// <returns>
+        /// String with the equivalent RNA sequence of the original DNA sequence
+        /// without any translation or transcription
+        /// </returns>
         public string equivDR(string dna)
         {
-            throw new NotImplementedException();
+            List<DNA> dnaList = new List<DNA>();
+            string returnSeq = "";
+            foreach (char dnaBase in dna)
+            {
+                dnaList.Add(GeneticMatcher.matchDnaB(dnaBase));
+            }
+            foreach (char dnaBase in dnaList)
+            {
+                returnSeq += dnaBase;
+            }
+            return returnSeq;
         }
 
         /// <summary>
@@ -42,7 +76,8 @@ namespace DRPTranslatorCS.Translators
         /// <returns></returns>
         public string equivDA(string dna)
         {
-            throw new NotImplementedException();
+            List<DnaCodon> dnaCodList = new List<DnaCodon>(Codon.getDnaCodonList(dna));
+            return Codon.getDnaCodonSeqStr(dnaCodList);
         }
 
         /// <summary>
@@ -56,6 +91,7 @@ namespace DRPTranslatorCS.Translators
         /// <returns></returns>
         public string equivDA(string dna, bool starts, bool stops)
         {
+            //TODO: Design implementation with starts and stops
             throw new NotImplementedException();
         }
 
@@ -68,20 +104,31 @@ namespace DRPTranslatorCS.Translators
         /// <returns></returns>
         public string transDR(string dna)
         {
-            throw new NotImplementedException();
+            List<char> dnaBases = new List<char>();
+            string returnSeq = "";
+            foreach (char dBase in dna)
+            {
+                dnaBases.Add(dBase == 'T' ? 'U' : dBase);
+            }
+            dnaBases.Reverse();
+            foreach (char dBase in dnaBases)
+            {
+                returnSeq += dBase;
+            }
+            return returnSeq;
         }
 
         /// <summary>
         /// DNA -> AA Oposite No Starts No Stops:
+        /// ...ATGGCA...TGA... ->
         /// [... ,UAC -> AUG, CGU -> GCA, ... , ACU -> UGA, ...] -> ...-MET-ALA-...-STOP-...
-        /// TACACT
-        /// Met-STOP
         /// </summary>
         /// <param name="dna"></param>
         /// <returns></returns>
         public string transDA(string dna)
         {
-            throw new NotImplementedException();
+            List<DnaCodon> dnaCodList = new List<DnaCodon>(Codon.getDnaCodonList(compDD(dna)));
+            return Codon.getDnaCodonSeqStr(dnaCodList);
         }
 
         /// <summary>
@@ -96,6 +143,7 @@ namespace DRPTranslatorCS.Translators
         /// <returns></returns>
         public string transDA(string dna, bool starts, bool stops)
         {
+            //TODO: Design implementation with starts and stops
             throw new NotImplementedException();
         }
 

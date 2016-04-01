@@ -434,6 +434,23 @@ namespace DRPTranslatorCS.Symbols
         }
 
         /// <summary>
+        /// Given a DNA Codon string, the function will return a new DnaCodon
+        /// "ATG" -> MET
+        /// </summary>
+        /// <param name="codon">String representing a DNA Codon</param>
+        /// <returns>DNA Codon</returns>
+        public static DnaCodon getDnaCodon(string codon)
+        {
+            char[] charArr = codon.ToCharArray();
+            List<DNA> rnaList = new List<DNA>();
+            foreach (char b in charArr)
+            {
+                rnaList.Add(GeneticMatcher.matchDnaB(b));
+            }
+            return new DnaCodon(rnaList[0], rnaList[1], rnaList[2]);
+        }
+
+        /// <summary>
         /// Given a RnaCodon List, the function will concatenate all codons
         /// into a single string sequence of aminoacids
         /// AUGUAG -> "MET-STOP"
@@ -807,7 +824,27 @@ namespace DRPTranslatorCS.Symbols
             }//first level
             return aa;
         }
+
+        /// <summary>
+        /// Given a RNA Codon string, the function will return a new DnaCodon
+        /// "AUG" -> MET
+        /// </summary>
+        /// <param name="codon">String representing a DNA Codon</param>
+        /// <returns>DNA Codon</returns>
+        public static RnaCodon getRnaCodon(string codon)
+        {
+            char[] charArr = codon.ToCharArray();
+            List<RNA> rnaList = new List<RNA>();
+            foreach (char b in charArr)
+            {
+                rnaList.Add(GeneticMatcher.matchRnaB(b));
+            }
+            var cod = new RnaCodon(rnaList[0], rnaList[1], rnaList[2]);
+            return cod;
+        }
     }
+
+    //TODO: Codon -> AA methods
 
     /// <summary>
     /// Struct representing a DNA Codon
@@ -862,6 +899,11 @@ namespace DRPTranslatorCS.Symbols
             {
                 _tp = value;
             }
+        }
+
+        public AA toAmino()
+        {
+            throw new NotImplementedException();
         }
 
     }
@@ -921,6 +963,9 @@ namespace DRPTranslatorCS.Symbols
             }
         }
 
-        
+        public AA toAmino()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

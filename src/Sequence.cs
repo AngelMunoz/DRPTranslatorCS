@@ -11,8 +11,8 @@ namespace DRPTranslatorCS
         string _compSeq;
         string _aaSeq;
 
-        List<RnaCodon> _rnaCodons;
-        List<DnaCodon> _dnaCodons;
+        List<Codon> _codons;
+        
 
         Dictionary<int, string> _starts;
         Dictionary<int, string> _stops;

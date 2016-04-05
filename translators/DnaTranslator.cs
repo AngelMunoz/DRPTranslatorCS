@@ -7,7 +7,7 @@ namespace DRPTranslatorCS.Translators
     /// Translates and manages any method regarding DNA Sequences, transcribing them to RNA or Aminoacid sequences.
     /// This class can also (if needed) return the RNA or Aminoacid sequence representation of the Original DNA sequence without translating or transcribing
     /// </summary>
-    class DnaTranslator
+    public class DnaTranslator
     {
         /// <summary>
         /// DNA -> DNA Complementary: A -> T
@@ -21,7 +21,7 @@ namespace DRPTranslatorCS.Translators
         /// <returns>
         /// Returns the complementary DNA Sequence
         /// </returns>
-        public string compDD(string dna)
+        public string CompDD(string dna)
         {
             List<char> dnaBases = new List<char>();
             string returnSeq = "";
@@ -52,19 +52,9 @@ namespace DRPTranslatorCS.Translators
         /// String with the equivalent RNA sequence of the original DNA sequence
         /// without any translation or transcription
         /// </returns>
-        public string equivDR(string dna)
+        public string EquivDR(string dna)
         {
-            List<DNA> dnaList = new List<DNA>();
-            string returnSeq = "";
-            foreach (char dnaBase in dna)
-            {
-                dnaList.Add(GeneticMatcher.MatchDnaB(dnaBase));
-            }
-            foreach (char dnaBase in dnaList)
-            {
-                returnSeq += dnaBase;
-            }
-            return returnSeq;
+            return dna.Replace('T', 'U');
         }
 
         /// <summary>
@@ -74,11 +64,11 @@ namespace DRPTranslatorCS.Translators
         /// </summary>
         /// <param name="dna"></param>
         /// <returns></returns>
-        public string equivDA(string dna)
+        public string EquivDA(string dna)
         {
             string rna = dna.Replace('T', 'U');
             Codon cod = new Codon();
-            List<Codon> codons = cod.GetCodonList(rna);
+            List<Codon> codons = cod.GetCodonList(rna, false);
             List<AA> aminos = GeneticMatcher.MatchAACod(codons);
             string seq = "";
             foreach (AA amino in aminos)
@@ -97,10 +87,56 @@ namespace DRPTranslatorCS.Translators
         /// <param name="starts"></param>
         /// <param name="stops"></param>
         /// <returns></returns>
-        public string equivDA(string dna, bool starts, bool stops)
+        public string EquivDA(string dna, bool start, bool stop)
         {
-            //TODO: Design implementation with starts and stops
-            throw new NotImplementedException();
+            string rna = dna.Replace('T', 'U');
+
+            int startIndex = rna.IndexOf("AUG");
+            int stopIndex = DetermineStop(rna);
+
+            if (stopIndex < 0)
+                stop = false;
+            if (startIndex < 0)
+                start = false;
+
+            if (start && stop)
+            {
+                rna = rna.Substring(startIndex, stopIndex+3);
+            }
+            else if (start && !stop)
+            {
+                rna = rna.Substring(startIndex, rna.Length);
+            }
+            else if (!start && stop)
+            {
+                rna = rna.Substring(0, stopIndex+3);
+            }
+
+            Codon cod = new Codon();
+            bool bythree = rna.Length % 3 == 0 ? true : false;
+            List<Codon> codList = cod.GetCodonList(rna, bythree);
+            return cod.GetCodonSeqString(codList);
+
+        }
+
+        /// <summary>
+        /// Given a RNA representing string, the method will look for the first occurence of any of the STOP codons.
+        /// </summary>
+        /// <param name="rna">String that represents a RNA sequence</param>
+        /// <returns>The zero based index of the first STOP codon that is found</returns>
+        private int DetermineStop(string rna)
+        {
+            int[] stopArr = { rna.IndexOf("UAA"), rna.IndexOf("UAG"), rna.IndexOf("UGA") };
+            int stopIndex = 0;
+
+            if (stopArr[0] > stopArr[1])
+                stopIndex = stopArr[0];
+            else if (stopArr[1] > stopArr[2])
+                stopIndex = stopArr[1];
+            else
+                stopIndex = stopArr[2];
+
+            return stopIndex;
         }
 
         /// <summary>
@@ -110,7 +146,7 @@ namespace DRPTranslatorCS.Translators
         /// </summary>
         /// <param name="dna"></param>
         /// <returns></returns>
-        public string transDR(string dna)
+        public string TransDR(string dna)
         {
             List<char> dnaBases = new List<char>();
             string returnSeq = "";
@@ -133,7 +169,7 @@ namespace DRPTranslatorCS.Translators
         /// </summary>
         /// <param name="dna"></param>
         /// <returns></returns>
-        public string transDA(string dna)
+        public string TransDA(string dna)
         {
             string equivRna = dna.Replace('T', 'U');
             string opRna = "";
@@ -142,7 +178,7 @@ namespace DRPTranslatorCS.Translators
                 opRna += GeneticMatcher.MatchOpositeRnaB(eqRnaB);
             }
             Codon cod = new Codon();
-            List<Codon> codons = cod.GetCodonList(opRna);
+            List<Codon> codons = cod.GetCodonList(opRna, false);
             List<AA> aminos = GeneticMatcher.MatchAACod(codons);
             string seq = "";
             foreach (AA amino in aminos)
@@ -162,10 +198,41 @@ namespace DRPTranslatorCS.Translators
         /// <param name="starts"></param>
         /// <param name="stops"></param>
         /// <returns></returns>
-        public string transDA(string dna, bool starts, bool stops)
+        public string TransDA(string dna, bool start, bool stop)
         {
-            //TODO: Design implementation with starts and stops
-            throw new NotImplementedException();
+            string rna = "";
+
+            foreach (char dnaB in dna)
+            {
+                rna += GeneticMatcher.MatchOpositeDnaB(dnaB);
+            }
+            rna.Replace('T', 'U');
+
+            int startIndex = rna.IndexOf("AUG");
+            int stopIndex = DetermineStop(rna);
+
+            if (stopIndex < 0)
+                stop = false;
+            if (startIndex < 0)
+                start = false;
+
+            if (start && stop)
+            {
+                rna = rna.Substring(startIndex, stopIndex + 3);
+            }
+            else if (start && !stop)
+            {
+                rna = rna.Substring(startIndex, rna.Length);
+            }
+            else if (!start && stop)
+            {
+                rna = rna.Substring(0, stopIndex + 3);
+            }
+
+            Codon cod = new Codon();
+            bool bythree = rna.Length % 3 == 0 ? true : false;
+            List<Codon> codList = cod.GetCodonList(rna, bythree);
+            return cod.GetCodonSeqString(codList);
         }
 
     }

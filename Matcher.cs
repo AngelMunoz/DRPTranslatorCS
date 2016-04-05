@@ -6,8 +6,12 @@ namespace DRPTranslatorCS
     /// <summary>
     /// This class contains several matcher methods which convert characters into their matching DNA or RNA bases
     /// </summary>
-    static class GeneticMatcher
+    public static class GeneticMatcher
     {
+        /// <summary>
+        /// This Dictionary contains all Aminoacid's Codons linked to it's Aminoacid
+        /// AA:Codon List
+        /// </summary>
         static readonly Dictionary<AA, List<Codon>> _dic = new Dictionary<AA, List<Codon>>()
         {
             {
@@ -403,10 +407,10 @@ namespace DRPTranslatorCS
         }
 
         /// <summary>
-        /// 
+        /// Fills an Aminoacid list with each of the codons contained in the codon list
         /// </summary>
-        /// <param name="codons"></param>
-        /// <returns></returns>
+        /// <param name="codons">List containing codons, each codon must have assigned its Fp, Sp, and Tp properties</param>
+        /// <returns>A list with the Aminoacids of the corresponding codons</returns>
         public static List<AA> MatchAACod(List<Codon> codons)
         {
             List<AA> aaList = new List<AA>();
@@ -418,20 +422,20 @@ namespace DRPTranslatorCS
         }
 
         /// <summary>
-        /// 
+        /// Takes a Codon and generates the corresponding aminoacid.
         /// </summary>
-        /// <param name="codon"></param>
-        /// <returns></returns>
+        /// <param name="codon">Codon with its Fp, Sp, Tp assigned</param>
+        /// <returns>An aminoacid that corresponds to the Codon</returns>
         public static AA MatchAACod(Codon codon)
         {
             return MatchStrAA(codon.ToString());
         }
 
         /// <summary>
-        /// 
+        /// Looks for the aminoacid in the AA Dictionary to return the list of codons that can form it.
         /// </summary>
-        /// <param name="amino"></param>
-        /// <returns></returns>
+        /// <param name="amino">Aminoacid that will be looked for at the dictionary</param>
+        /// <returns>The list of codons that can form the given aminoacid</returns>
         public static List<Codon> MatchCodonAA(AA amino)
         {
             return Dic[amino];

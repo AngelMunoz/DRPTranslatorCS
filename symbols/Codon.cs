@@ -15,10 +15,6 @@ namespace DRPTranslatorCS.Symbols
         private RNA sp;
         private RNA tp;
 
-        /// <summary>
-        /// usefull when the methods are used only, however if rna bases are assigned, the codon is fully usable.
-        /// </summary>
-        public Codon() { }
         public Codon(RNA fp, RNA sp, RNA tp)
         {
             Fp = fp;
@@ -71,7 +67,7 @@ namespace DRPTranslatorCS.Symbols
         /// <param name="rnaSeq">String representing a RNA sequence</param>
         /// <param name="bythree">This parameter tells the function whether to chop the string in strict triplets or take a last non strict tripplet</param>
         /// <returns>The codon List will only contain Full Codons (Three RNA Bases)</returns>
-        public List<Codon> GetCodonList(string rnaSeq, bool bythree)
+        public static List<Codon> GetCodonList(string rnaSeq, bool bythree)
         {
             List<string> strCodons = null;
             if (!bythree)
@@ -104,7 +100,7 @@ namespace DRPTranslatorCS.Symbols
         /// </summary>
         /// <param name="codons">List that Contain Codons</param>
         /// <returns>String composed of the string representation of each codon in the supplied list</returns>
-        public string GetCodonSeqString(List<Codon> codons)
+        public static string GetCodonSeqString(List<Codon> codons)
         {
             string seq = "";
             foreach (Codon codon in codons)

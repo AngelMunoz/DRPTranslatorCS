@@ -139,10 +139,10 @@ namespace DRPTranslatorCS
             {
                 AA.THR, new List<Codon>()
                 {
-                    new Codon(RNA.C, RNA.C, RNA.U),
-                    new Codon(RNA.C, RNA.C, RNA.C),
-                    new Codon(RNA.C, RNA.C, RNA.A),
-                    new Codon(RNA.C, RNA.C, RNA.G)
+                    new Codon(RNA.A, RNA.C, RNA.U),
+                    new Codon(RNA.A, RNA.C, RNA.C),
+                    new Codon(RNA.A, RNA.C, RNA.A),
+                    new Codon(RNA.A, RNA.C, RNA.G)
                 }
             },
             {
@@ -214,7 +214,7 @@ namespace DRPTranslatorCS
                 case 'G':
                     return RNA.G;
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid RNA Base");
             }
         }
 
@@ -237,7 +237,7 @@ namespace DRPTranslatorCS
                 case RNA.G:
                     return 'G';
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid RNA Base");
             }
         }
 
@@ -260,7 +260,7 @@ namespace DRPTranslatorCS
                 case 'G':
                     return RNA.C;
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid RNA Base");
             }
         }
 
@@ -283,7 +283,7 @@ namespace DRPTranslatorCS
                 case RNA.G:
                     return 'C';
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid RNA Base");
             }
         }
 
@@ -306,7 +306,7 @@ namespace DRPTranslatorCS
                 case 'G':
                     return DNA.G;
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid DNA Base");
             }
         }
 
@@ -329,7 +329,7 @@ namespace DRPTranslatorCS
                 case DNA.G:
                     return 'G';
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid DNA Base");
             }
         }
 
@@ -353,7 +353,7 @@ namespace DRPTranslatorCS
                 case 'G':
                     return DNA.C;
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid DNA Base");
             }
         }
 
@@ -376,7 +376,7 @@ namespace DRPTranslatorCS
                 case DNA.G:
                     return 'C';
                 default:
-                    throw new NotImplementedException();
+                    throw new KeyNotFoundException("Base: " + b + "Is not a valid DNA Base");
             }
         }
 
@@ -395,7 +395,7 @@ namespace DRPTranslatorCS
                     return entry.Key;
                 }
             }
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("Aminoacid: " + amino + "Is not a valid Aminoacid");
             
         }
 
@@ -406,6 +406,9 @@ namespace DRPTranslatorCS
         /// <returns>A list with the Aminoacids of the corresponding codons</returns>
         public static List<AA> MatchAACod(List<Codon> codons)
         {
+            if (codons ==  null)
+                throw new ArgumentNullException("The Codon List Must not be null");
+
             List<AA> aaList = new List<AA>();
             foreach (Codon codon in codons)
             {
@@ -421,6 +424,9 @@ namespace DRPTranslatorCS
         /// <returns>An aminoacid that corresponds to the Codon</returns>
         public static AA MatchAACod(Codon codon)
         {
+            if (codon == null)
+                throw new ArgumentNullException("The Codon Must not be Null");
+
             foreach (var entry in Dic)
             {
                 if (entry.Value.Find(actual => codon.Equals(actual)) != null)
@@ -428,7 +434,7 @@ namespace DRPTranslatorCS
                     return entry.Key;
                 }
             }
-            throw new ArgumentException();
+            throw new ArgumentException("Codon: " + codon.ToString() + " AA Match culd not be found.");
 
         }
 

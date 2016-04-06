@@ -388,22 +388,15 @@ namespace DRPTranslatorCS
         /// <returns></returns>
         public static AA MatchStrAA(string amino)
         {
-            AA key = 0;
-            foreach (var index in Dic)
+            foreach (var entry in Dic)
             {
-                if (index.Key.ToString() == amino)
+                if (entry.Key.ToString() == amino)
                 {
-                    key = index.Key;
+                    return entry.Key;
                 }
             }
-            if (key.ToString() != amino)
-            {
-                throw new KeyNotFoundException();
-            }
-            else
-            {
-                return key;
-            }
+            throw new KeyNotFoundException();
+            
         }
 
         /// <summary>
@@ -428,7 +421,15 @@ namespace DRPTranslatorCS
         /// <returns>An aminoacid that corresponds to the Codon</returns>
         public static AA MatchAACod(Codon codon)
         {
-            return MatchStrAA(codon.ToString());
+            foreach (var entry in Dic)
+            {
+                if (entry.Value.Find(actual => codon.Equals(actual)) != null)
+                {
+                    return entry.Key;
+                }
+            }
+            throw new ArgumentException();
+
         }
 
         /// <summary>

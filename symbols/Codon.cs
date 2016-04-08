@@ -64,33 +64,23 @@ namespace DRPTranslatorCS.Symbols
         /// <summary>
         /// Given a rna string sequence, the method will chop the string in rna base triplets.
         /// </summary>
-        /// <param name="rnaSeq">String representing a RNA sequence</param>
+        /// <param name="rnaSeq">String representing a RNA sequence, This sequence must be Divisible by 3</param>
         /// <param name="bythree">This parameter tells the function whether to chop the string in strict triplets or take a last non strict tripplet</param>
         /// <returns>The codon List will only contain Full Codons (Three RNA Bases)</returns>
-        public static List<Codon> GetCodonList(string rnaSeq, bool bythree)
+        public static List<Codon> GetCodonList(string rnaSeq)
         {
             List<string> strCodons = null;
-            if (!bythree)
-            {
-                strCodons = (from Match m in Regex.Matches(rnaSeq, @"\.{1,3}") select m.Value).ToList();
-            }
-            else
-            {
-                if (rnaSeq.Length % 3 != 0)
-                    throw new IndexOutOfRangeException("The sequence is not divisible by 3");
-                strCodons = (from Match m in Regex.Matches(rnaSeq, @"\.{3}") select m.Value).ToList();
-            }
 
+            if (rnaSeq.Length % 3 != 0)
+                throw new IndexOutOfRangeException("The sequence is not divisible by 3");
+            strCodons = (from Match m in Regex.Matches(rnaSeq, @"\w{3}") select m.Value).ToList();
 
             List<Codon> codons = new List<Codon>();
             foreach (string rBase in strCodons)
             {
-                if (strCodons.LastIndexOf(rBase[0].ToString()) > 0 && strCodons.LastIndexOf(rBase[1].ToString()) > 0 && strCodons.LastIndexOf(rBase[2].ToString()) > 0)
-                {
-                    codons.Add(new Codon(GeneticMatcher.MatchRnaB(rBase[0]),
-                                     GeneticMatcher.MatchRnaB(rBase[1]),
-                                     GeneticMatcher.MatchRnaB(rBase[2])));
-                }
+                codons.Add(new Codon(GeneticMatcher.MatchRnaB(rBase[0]),
+                                    GeneticMatcher.MatchRnaB(rBase[1]),
+                                    GeneticMatcher.MatchRnaB(rBase[2])));
             }
             return codons;
         }

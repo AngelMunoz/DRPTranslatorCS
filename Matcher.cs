@@ -447,5 +447,20 @@ namespace DRPTranslatorCS
         {
             return Dic[amino];
         }
+
+        /// <summary>
+        /// Generates a Codon from a string representation of a codon.
+        /// </summary>
+        /// <param name="codonStr">RNA String representation of a codon.</param>
+        /// <returns>A Codon based on the provided string</returns>
+        public static Codon MatchCodon(string codonStr)
+        {
+            List<RNA> rbase = new List<RNA>();
+            for (int i = 0; i< codonStr.Length;i++)
+            {
+                rbase.Add(MatchRnaB(codonStr[i]));
+            }
+            return new Codon(rbase[0], rbase[1], rbase[2]);
+        }
     }
 }

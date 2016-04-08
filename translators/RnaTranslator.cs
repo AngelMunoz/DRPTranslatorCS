@@ -64,7 +64,7 @@ namespace DRPTranslatorCS.Translators
         /// <returns></returns>
         public string EquivRA(string rna)
         {
-            List<Codon> codons = Codon.GetCodonList(rna, false);
+            List<Codon> codons = Codon.GetCodonList(rna);
             List<AA> aminos = GeneticMatcher.MatchAACod(codons);
             string seq = "";
             foreach (AA amino in aminos)
@@ -107,7 +107,7 @@ namespace DRPTranslatorCS.Translators
             }
 
             bool bythree = rna.Length % 3 == 0 ? true : false;
-            List<Codon> codList = Codon.GetCodonList(rna, bythree);
+            List<Codon> codList = Codon.GetCodonList(rna);
             return Codon.GetCodonSeqString(codList);
 
         }
@@ -169,7 +169,7 @@ namespace DRPTranslatorCS.Translators
             {
                 opRna += GeneticMatcher.MatchOpositeRnaB(eqRnaB);
             }
-            List<Codon> codons = Codon.GetCodonList(opRna, false);
+            List<Codon> codons = Codon.GetCodonList(opRna);
             List<AA> aminos = GeneticMatcher.MatchAACod(codons);
             string seq = "";
             foreach (AA amino in aminos)
@@ -218,7 +218,7 @@ namespace DRPTranslatorCS.Translators
                 rna = rna.Substring(0, stopIndex + 3);
             }
             bool bythree = rna.Length % 3 == 0 ? true : false;
-            List<Codon> codList = Codon.GetCodonList(rna, bythree);
+            List<Codon> codList = Codon.GetCodonList(rna);
             return Codon.GetCodonSeqString(codList);
         }
 

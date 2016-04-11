@@ -78,9 +78,9 @@ namespace DRPTranslatorCS.Symbols
             List<Codon> codons = new List<Codon>();
             foreach (string rBase in strCodons)
             {
-                codons.Add(new Codon(GeneticMatcher.MatchRnaB(rBase[0]),
-                                    GeneticMatcher.MatchRnaB(rBase[1]),
-                                    GeneticMatcher.MatchRnaB(rBase[2])));
+                codons.Add(new Codon(GeneticMatcher.ParseRna(rBase[0]),
+                                    GeneticMatcher.ParseRna(rBase[1]),
+                                    GeneticMatcher.ParseRna(rBase[2])));
             }
             return codons;
         }

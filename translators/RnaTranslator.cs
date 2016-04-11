@@ -1,6 +1,7 @@
 ﻿using DRPTranslatorCS.Symbols;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DRPTranslatorCS.Translators
 {
@@ -19,7 +20,7 @@ namespace DRPTranslatorCS.Translators
         /// <returns>
         /// Returns the complementary RNA Sequence
         /// </returns>
-        public string CompRR(string rna)
+        public string RnaToRna(string rna)
         {
             List<char> rnaBases = new List<char>();
             string returnSeq = "";
@@ -27,10 +28,9 @@ namespace DRPTranslatorCS.Translators
             {
                 rnaBases.Add(rBase);
             }
-            rnaBases.Reverse();
             foreach (char dBase in rnaBases)
             {
-                returnSeq += dBase;
+                returnSeq += GeneticMatcher.ParseOpositeRna(dBase);
             }
             return returnSeq;
         }
@@ -50,7 +50,7 @@ namespace DRPTranslatorCS.Translators
         /// String with the equivalent DNA sequence of the original RNA sequence
         /// without any translation or transcription
         /// </returns>
-        public string EquivRD(string rna)
+        public string EquivRnaDna(string rna)
         {
             return rna.Replace('U', 'T');
         }
@@ -62,75 +62,19 @@ namespace DRPTranslatorCS.Translators
         /// </summary>
         /// <param name="rna"></param>
         /// <returns></returns>
-        public string EquivRA(string rna)
+        public string EquivRnaAa(string rna)
         {
             List<Codon> codons = Codon.GetCodonList(rna);
-            List<AA> aminos = GeneticMatcher.MatchAACod(codons);
+            List<AA> aminos = GeneticMatcher.ParseAA(codons);
             string seq = "";
             foreach (AA amino in aminos)
             {
-                seq += amino.ToString();
+                    seq += amino.ToString() + "-";
             }
+            seq = seq.Remove(seq.LastIndexOf("-"));
             return seq;
         }
 
-        /// <summary>
-        /// RNA -> AA Equivalent Starts Stops: AUG -> MET ... UAG -> STOP
-        /// UACUCU
-        /// TYR-SER (return)
-        /// </summary>
-        /// <param name="rna"></param>
-        /// <param name="starts"></param>
-        /// <param name="stops"></param>
-        /// <returns></returns>
-        public string EquivRA(string rna, bool start, bool stop)
-        {
-            int startIndex = rna.IndexOf("AUG");
-            int stopIndex = DetermineStop(rna);
-
-            if (stopIndex < 0)
-                stop = false;
-            if (startIndex < 0)
-                start = false;
-
-            if (start && stop)
-            {
-                rna = rna.Substring(startIndex, stopIndex + 3);
-            }
-            else if (start && !stop)
-            {
-                rna = rna.Substring(startIndex, rna.Length);
-            }
-            else if (!start && stop)
-            {
-                rna = rna.Substring(0, stopIndex + 3);
-            }
-
-            bool bythree = rna.Length % 3 == 0 ? true : false;
-            List<Codon> codList = Codon.GetCodonList(rna);
-            return Codon.GetCodonSeqString(codList);
-
-        }
-
-        /// <summary>
-        /// Given a RNA representing string, the method will look for the first occurence of any of the STOP codons.
-        /// </summary>
-        /// <param name="rna">String that represents a RNA sequence</param>
-        /// <returns>The zero based index of the first STOP codon that is found</returns>
-        private int DetermineStop(string rna)
-        {
-            int[] stopArr = { rna.IndexOf("UAA"), rna.IndexOf("UAG"), rna.IndexOf("UGA") };
-            int stopIndex = 0;
-
-            if (stopArr[0] > stopArr[1])
-                stopIndex = stopArr[0];
-            else if (stopArr[1] > stopArr[2])
-                stopIndex = stopArr[1];
-            else
-                stopIndex = stopArr[2];
-
-            return stopIndex;
-        }
 
         /// <summary>
         /// RNA -> DNA Oposite:  U -> T
@@ -139,7 +83,7 @@ namespace DRPTranslatorCS.Translators
         /// </summary>
         /// <param name="rna"></param>
         /// <returns></returns>
-        public string TransRD(string rna)
+        public string TransRnaToDna(string rna)
         {
             List<char> rnaBases = new List<char>();
             string returnSeq = "";
@@ -147,81 +91,37 @@ namespace DRPTranslatorCS.Translators
             {
                 rnaBases.Add(rBase);
             }
-            rnaBases.Reverse();
             foreach (char dBase in rnaBases)
             {
-                returnSeq += dBase;
+                returnSeq += GeneticMatcher.ParseOpositeRna(dBase);
             }
-            returnSeq.Replace('U', 'T');
+            returnSeq = returnSeq.Replace('U', 'T');
             return returnSeq;
         }
 
         /// <summary>
-        /// RNA -> AA Oposite No Starts No Stops:
+        /// RNA -> AA Oposite
         /// AUGGCA...UGA... -> ...-MET-ALA-...-STOP-...
         /// </summary>
         /// <param name="rna"></param>
-        /// <returns></returns>
-        public string TransRA(string rna)
+        /// <returns>The oposite aminoacid sequence from the original sequence</returns>
+        public string TransRnaToAa(string rna)
         {
             string opRna = "";
             foreach (char eqRnaB in rna)
             {
-                opRna += GeneticMatcher.MatchOpositeRnaB(eqRnaB);
+                opRna += GeneticMatcher.ParseOpositeRna(eqRnaB);
             }
             List<Codon> codons = Codon.GetCodonList(opRna);
-            List<AA> aminos = GeneticMatcher.MatchAACod(codons);
+            List<AA> aminos = GeneticMatcher.ParseAA(codons);
             string seq = "";
             foreach (AA amino in aminos)
             {
-                seq += amino.ToString();
+                seq += amino.ToString() + "-";               
             }
+            seq = seq.Remove(seq.LastIndexOf("-"));
             return seq;
         }
-
-        /// <summary>
-        /// RNA -> AA Oposite Starts Stops:
-        /// MET-ALA-...-STOP
-        /// UACGCA...ACU
-        /// AUGGCA...UGA
-        /// </summary>
-        /// <param name="rna"></param>
-        /// <param name="starts"></param>
-        /// <param name="stops"></param>
-        /// <returns></returns>
-        public string TransRA(string rna, bool start, bool stop)
-        {
-
-            foreach (char rBase in rna)
-            {
-                rna += GeneticMatcher.MatchOpositeRnaB(rBase);
-            }
-
-            int startIndex = rna.IndexOf("AUG");
-            int stopIndex = DetermineStop(rna);
-
-            if (stopIndex < 0)
-                stop = false;
-            if (startIndex < 0)
-                start = false;
-
-            if (start && stop)
-            {
-                rna = rna.Substring(startIndex, stopIndex + 3);
-            }
-            else if (start && !stop)
-            {
-                rna = rna.Substring(startIndex, rna.Length);
-            }
-            else if (!start && stop)
-            {
-                rna = rna.Substring(0, stopIndex + 3);
-            }
-            bool bythree = rna.Length % 3 == 0 ? true : false;
-            List<Codon> codList = Codon.GetCodonList(rna);
-            return Codon.GetCodonSeqString(codList);
-        }
-
 
     }
 }

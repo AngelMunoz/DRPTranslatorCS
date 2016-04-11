@@ -201,7 +201,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">Character representing a RNA Base</param>
         /// <returns>RNA Base</returns>
-        public static RNA MatchRnaB(char b)
+        public static RNA ParseRna(char b)
         {
             switch (b)
             {
@@ -224,7 +224,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">RNA Base</param>
         /// <returns>Character Representing a RNA Base</returns>
-        public static char MatchRnaB(RNA b)
+        public static char ParseRna(RNA b)
         {
             switch (b)
             {
@@ -247,7 +247,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">Character Representing a RNA Base</param>
         /// <returns>RNA Base</returns>
-        public static RNA MatchOpositeRnaB(char b)
+        public static RNA ParseOpositeRna(char b)
         {
             switch (b)
             {
@@ -270,7 +270,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">RNA Base</param>
         /// <returns>Character Representing a RNA Base</returns>
-        public static char MatchOpositeRnaB(RNA b)
+        public static char ParseOpositeRna(RNA b)
         {
             switch (b)
             {
@@ -293,7 +293,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">Character representing a DNA Base</param>
         /// <returns>DNA Base</returns>
-        public static DNA MatchDnaB(char b)
+        public static DNA ParseDna(char b)
         {
             switch (b)
             {
@@ -316,7 +316,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">DNA Base</param>
         /// <returns>Character Representing a DNA Base</returns>
-        public static char MatchDnaB(DNA b)
+        public static char ParseDna(DNA b)
         {
             switch (b)
             {
@@ -340,7 +340,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">Character Representing a DNA Base</param>
         /// <returns>RNA Base</returns>
-        public static DNA MatchOpositeDnaB(char b)
+        public static DNA ParseOpositeDna(char b)
         {
             switch (b)
             {
@@ -363,7 +363,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="b">DNA Base</param>
         /// <returns>Character Representing a DNA Base</returns>
-        public static char MatchOpositeDnaB(DNA b)
+        public static char ParseOpositeDna(DNA b)
         {
             switch (b)
             {
@@ -386,7 +386,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="codon"></param>
         /// <returns></returns>
-        public static AA MatchStrAA(string amino)
+        public static AA ParseAA(string amino)
         {
             foreach (var entry in Dic)
             {
@@ -404,7 +404,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="codons">List containing codons, each codon must have assigned its Fp, Sp, and Tp properties</param>
         /// <returns>A list with the Aminoacids of the corresponding codons</returns>
-        public static List<AA> MatchAACod(List<Codon> codons)
+        public static List<AA> ParseAA(List<Codon> codons)
         {
             if (codons ==  null)
                 throw new ArgumentNullException("The Codon List Must not be null");
@@ -412,7 +412,7 @@ namespace DRPTranslatorCS
             List<AA> aaList = new List<AA>();
             foreach (Codon codon in codons)
             {
-                aaList.Add(MatchAACod(codon));
+                aaList.Add(ParseAA(codon));
             }
             return aaList;
         }
@@ -422,7 +422,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="codon">Codon with its Fp, Sp, Tp assigned</param>
         /// <returns>An aminoacid that corresponds to the Codon</returns>
-        public static AA MatchAACod(Codon codon)
+        public static AA ParseAA(Codon codon)
         {
             if (codon == null)
                 throw new ArgumentNullException("The Codon Must not be Null");
@@ -443,7 +443,7 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="amino">Aminoacid that will be looked for at the dictionary</param>
         /// <returns>The list of codons that can form the given aminoacid</returns>
-        public static List<Codon> MatchCodonAA(AA amino)
+        public static List<Codon> ParseAA(AA amino)
         {
             return Dic[amino];
         }
@@ -453,12 +453,12 @@ namespace DRPTranslatorCS
         /// </summary>
         /// <param name="codonStr">RNA String representation of a codon.</param>
         /// <returns>A Codon based on the provided string</returns>
-        public static Codon MatchCodon(string codonStr)
+        public static Codon ParseCodon(string codonStr)
         {
             List<RNA> rbase = new List<RNA>();
             for (int i = 0; i< codonStr.Length;i++)
             {
-                rbase.Add(MatchRnaB(codonStr[i]));
+                rbase.Add(ParseRna(codonStr[i]));
             }
             return new Codon(rbase[0], rbase[1], rbase[2]);
         }

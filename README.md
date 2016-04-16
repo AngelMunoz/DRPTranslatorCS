@@ -50,7 +50,7 @@ namespace App
 ```csharp
 using System;
 using DRPTranslatorCS.Translators;
-namespace consoleapp1
+namespace App
 {
     class Program
     {

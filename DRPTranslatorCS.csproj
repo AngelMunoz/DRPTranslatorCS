@@ -36,7 +36,6 @@
   <ItemGroup>
     <Compile Include="Matcher.cs" />
     <Compile Include="symbols\Codon.cs" />
-    <Compile Include="Sequence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="symbols\Symbols.cs" />
     <Compile Include="translators\DnaTranslator.cs" />

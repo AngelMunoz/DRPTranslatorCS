@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace DRPTranslatorCS.Symbols
+namespace DRPTranslator.Symbols
 {
     /// <summary>
     /// Represents a Codon object, to use a codon it must have three genetic bases

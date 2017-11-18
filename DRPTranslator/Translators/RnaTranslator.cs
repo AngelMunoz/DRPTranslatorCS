@@ -1,9 +1,9 @@
-﻿using DRPTranslatorCS.Symbols;
+﻿using DRPTranslator.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DRPTranslatorCS.Translators
+namespace DRPTranslator.Translators
 {
     public class RnaTranslator
     {

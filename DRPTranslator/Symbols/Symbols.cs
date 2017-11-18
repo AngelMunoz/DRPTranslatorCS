@@ -1,4 +1,4 @@
-﻿namespace DRPTranslatorCS.Symbols
+﻿namespace DRPTranslator.Symbols
 {
     /// <summary>
     /// Representation of DNA Bases

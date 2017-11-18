@@ -1,7 +1,7 @@
 ﻿using System;
-using DRPTranslatorCS.Symbols;
+using DRPTranslator.Symbols;
 using System.Collections.Generic;
-namespace DRPTranslatorCS
+namespace DRPTranslator
 {
     /// <summary>
     /// This class contains several matcher methods which convert characters into their matching DNA or RNA bases

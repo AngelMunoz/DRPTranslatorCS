@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DRPTranslatorCS.Symbols;
-namespace DRPTranslatorCS.Translators
+using DRPTranslator.Symbols;
+namespace DRPTranslator.Translators
 {
     /// <summary>
     /// Translates and manages any method regarding DNA Sequences, transcribing them to RNA or Aminoacid sequences.

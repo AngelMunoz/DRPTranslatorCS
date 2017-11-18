@@ -1,6 +1,8 @@
 # Hello Everyone!
 
-This is **DRPTRanslatorCS** a (rewritten from the ground up) port of [DRPTRanslator]() npm package. 
+#### It now supports netstandard 2.0!
+
+This is **DRPTRanslatorCS** a (rewritten from the ground up) port of [DRPTRanslator](https://github.com/AngelMunoz/DRPTranslator) npm package. 
 
 This library is useful for those that want to do some entry-level genetics. You can Translate, Transcript
 DNA or RNA sequences, also you can get the Aminoacid sequences based on the provided sequence.
@@ -9,7 +11,7 @@ It is also helpful to get some information from the sequences themselves like St
 so If you know someone who needs a little help with their Genetic sequence this might suit you.
 
 However if you are an advanced geneticist looking for complex computations I'm afraid that this will not help you at all.
-if you want to help me to get more features included in the library go ahead and raise an [Issue]() :)
+if you want to help me to get more features included in the library go ahead and raise an [Issue](https://github.com/AngelMunoz/DRPTranslatorCS/issues/new) :)
 I'm glad to help in any way possible, also if you find any bugs or unexpected behaviors please fill a new issue.
 
 ## Installation
@@ -31,7 +33,7 @@ There you go
 ### Parsing individual characters
 ```csharp
 using System;
-using DRPTranslatorCS;
+using DRPTranslator;
 namespace App
 {
     class Program
@@ -49,7 +51,7 @@ namespace App
 ### Translating or Transcribing DNA sequences
 ```csharp
 using System;
-using DRPTranslatorCS.Translators;
+using DRPTranslator.Translators;
 namespace App
 {
     class Program

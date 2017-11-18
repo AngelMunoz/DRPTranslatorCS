@@ -2,6 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>DRPTranslatorCS</AssemblyName>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>Angel D. Munoz</Authors>
+    <Company>Tunaxor Apps.</Company>
+    <Product>DRPTranslator</Product>
+    <Description>This is a Small Library for DNA-RNA Translation
+It is by no means meant to be the most performant thing ever neither for SERIOUS science software development, you can use it for small apps and teaching apps without problem</Description>
+    <Copyright>Angel D. Munoz 2017</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/AngelMunoz/DRPTranslatorCS</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>DNA, RNA</PackageTags>
+    <PackageReleaseNotes>While it's not a full library I never received complains about it so i guess we can pull it out of Beta</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
